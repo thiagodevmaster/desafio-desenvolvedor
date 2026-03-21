@@ -1,0 +1,9 @@
+Auth (Tests\Feature\Auth)
+ [x] User can login with valid credential
+ [x] User cannot log in with invalid credentials
+ [x] Login validation rules with data set "senha_incorreta"
+ [x] Login validation rules with data set "email_inexistente"
+ [x] Login validation rules with data set "email_vazio"
+ [x] Login validation rules with data set "senha_vazia"
+ [x] User can logout
+

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="/var/www/html/phpunit.xml" tests="7" assertions="13" errors="0" failures="0" skipped="0" time="1.053048">
+    <testsuite name="Feature" tests="7" assertions="13" errors="0" failures="0" skipped="0" time="1.053048">
+      <testsuite name="Tests\Feature\AuthTest" file="Auth (Tests\Feature\Auth)" tests="7" assertions="13" errors="0" failures="0" skipped="0" time="1.053048">
+        <testcase name="User can login with valid credential" file="Auth (Tests\Feature\Auth)::User can login with valid credential" class="Tests\Feature\AuthTest" classname="Tests.Feature.AuthTest" assertions="6" time="0.291459"/>
+        <testcase name="User cannot log in with invalid credentials" file="Auth (Tests\Feature\Auth)::User cannot log in with invalid credentials" class="Tests\Feature\AuthTest" classname="Tests.Feature.AuthTest" assertions="1" time="0.220520"/>
+        <testsuite name="Login validation rules" tests="4" assertions="4" errors="0" failures="0" skipped="0" time="0.517402">
+          <testcase name="Login validation rules with data set &quot;senha_incorreta&quot;" file="Auth (Tests\Feature\Auth)::Login validation rules with data set &quot;senha_incorreta&quot;" class="Tests\Feature\AuthTest" classname="Tests.Feature.AuthTest" assertions="1" time="0.232432"/>
+          <testcase name="Login validation rules with data set &quot;email_inexistente&quot;" file="Auth (Tests\Feature\Auth)::Login validation rules with data set &quot;email_inexistente&quot;" class="Tests\Feature\AuthTest" classname="Tests.Feature.AuthTest" assertions="1" time="0.233128"/>
+          <testcase name="Login validation rules with data set &quot;email_vazio&quot;" file="Auth (Tests\Feature\Auth)::Login validation rules with data set &quot;email_vazio&quot;" class="Tests\Feature\AuthTest" classname="Tests.Feature.AuthTest" assertions="1" time="0.032739"/>
+          <testcase name="Login validation rules with data set &quot;senha_vazia&quot;" file="Auth (Tests\Feature\Auth)::Login validation rules with data set &quot;senha_vazia&quot;" class="Tests\Feature\AuthTest" classname="Tests.Feature.AuthTest" assertions="1" time="0.019102"/>
+        </testsuite>
+        <testcase name="User can logout" file="Auth (Tests\Feature\Auth)::User can logout" class="Tests\Feature\AuthTest" classname="Tests.Feature.AuthTest" assertions="2" time="0.023668"/>
+      </testsuite>
+    </testsuite>
+  </testsuite>
+</testsuites>
