@@ -9,7 +9,6 @@ class UploadController extends Controller
 {
     public function store(Request $request)
     {
-        dd('aqui');
         $request->validate([
             'file' => [
                 'required',
