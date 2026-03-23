@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('file_hash', 255)->unique();
             $table->date('reference_date');
             $table->integer('total_rows')->default(0);
+            $table->enum('status', ['pending', 'processing', 'completed', 'failed'])->default('pending');
             $table->index(['file_name', 'reference_date']);
 
             $table->timestamps();

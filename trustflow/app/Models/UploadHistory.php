@@ -14,7 +14,8 @@ class UploadHistory extends Model
         'file_name',
         'file_hash',
         'reference_date',
-        'total_rows'
+        'total_rows',
+        'status'
     ];
 
     protected $casts = [
@@ -30,4 +31,5 @@ class UploadHistory extends Model
     {
         return $this->hasMany(Instrument::class);
     }
+
 }
