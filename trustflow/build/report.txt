@@ -7,6 +7,10 @@ Auth (Tests\Feature\Auth)
  [x] Login validation rules with data set "senha_vazia"
  [x] User can logout
 
+Instrument Service (Tests\Feature\Services\InstrumentService)
+ [x] It throws exception if file header is invalid
+ [x] Throw an exception if the data provided does not match the data in the file
+
 Process Instrument Upload (Tests\Feature\Jobs\ProcessInstrumentUpload)
  [x] It processes csv upload correctly
 

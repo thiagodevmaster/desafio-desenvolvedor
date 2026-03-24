@@ -2,14 +2,11 @@
 
 namespace Tests\Feature;
 
-use App\Jobs\ProcessInstrumentUpload;
-use App\Models\UploadHistory;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;
 
 class ProcessInstrumentUploadControllerTest extends TestCase
@@ -19,7 +16,7 @@ class ProcessInstrumentUploadControllerTest extends TestCase
     public function test_authenticated_user_can_upload_instruments_file(): void
     {
         Storage::fake('local');
-        Queue::fake();
+        Bus::fake();
 
         $user = User::factory()->create();
 
@@ -41,7 +38,10 @@ class ProcessInstrumentUploadControllerTest extends TestCase
             'file_name' => 'instruments.csv' 
         ]);
 
-        Queue::assertPushed(ProcessInstrumentUpload::class);
+        Bus::assertChained([
+            \App\Jobs\ProcessInstrumentUpload::class,
+            \App\Jobs\SendEmailInstrumentsJob::class
+        ]);
     }
 
     public function tests_whether_a_user_who_is_not_logged_in_can_upload(): void
