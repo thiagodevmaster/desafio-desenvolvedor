@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Api\v1;
 use App\Http\Controllers\Controller;
 use App\Jobs\ProcessInstrumentUpload;
 use App\Models\UploadHistory;
+use App\Services\InstrumentsService;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
 
 class UploadController extends Controller
@@ -22,32 +24,29 @@ class UploadController extends Controller
             'reference_date' => "required|date"    
         ]);
 
-        $file = $request->file('file');
-        $fileHash = md5_file($file->getRealPath());
+        try{
+            $service = new InstrumentsService($request->file('file'), $request->reference_date);
+            $archive = $service->saveFile();
 
-        $date = Carbon::createFromFormat('Y-m-d', $request->reference_date)
-            ->startOfDay();
-        
-        if(UploadHistory::where('file_hash', $fileHash)->exists()){
+            $history = UploadHistory::create([
+                'user_id' => auth()->user()->id,
+                'file_name' => $archive['fileName'],
+                'file_hash' => $archive['hash'],
+                'reference_date' => $archive['date'],
+                'status' => 'pending'
+            ]);
+
+            ProcessInstrumentUpload::dispatch($history, $archive['path']);
+
             return response()->json([
-                "message" => "File already processed previously.",
-            ], 422);
+                "message" => "File received and being processed; you will be notified by email upon completion.",
+            ], 202);
+        }catch(Exception $error) {
+            return response()->json([
+                "message" => $error->getMessage(),
+            ], $error->getCode() ?: 400);
         }
+
         
-        $path = $file->storeAs('uploads', time() . $file->getClientOriginalName());
-
-        $history = UploadHistory::create([
-            'user_id' => auth()->user()->id,
-            'file_name' => $file->getClientOriginalName(),
-            'file_hash' => $fileHash,
-            'reference_date' => $date,
-            'status' => 'pending'
-        ]);
-
-        ProcessInstrumentUpload::dispatch($history, $path);
-
-        return response()->json([
-            "message" => "File received and being processed; you will be notified by email upon completion.",
-        ], 202);
     }
 }
