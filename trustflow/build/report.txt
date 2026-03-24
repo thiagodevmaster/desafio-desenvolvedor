@@ -24,3 +24,7 @@ Process Instrument Upload Controller (Tests\Feature\ProcessInstrumentUploadContr
  [x] Upload rejects files too large
  [x] Upload rejects invalid date format
 
+Send Email Instruments (Tests\Feature\Jobs\SendEmailInstruments)
+ [x] If an error is received it sends a failure message
+ [x] It sends success email when no error is present
+
