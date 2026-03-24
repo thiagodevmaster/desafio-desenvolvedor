@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Cache;
 use Throwable;
 
 /**
@@ -20,6 +21,23 @@ use Throwable;
  */
 class UploadController extends Controller
 {
+    public function index(Request $request)
+    {
+        $fileName = $request->query('file_name');
+        $referenceDate = $request->query('reference_date');
+        $page = $request->query('page', 1);
+
+        $cacheKey = "global_history_f:{$fileName}_d:{$referenceDate}_p:{$page}";
+
+        return Cache::remember($cacheKey, now()->addMinutes(30), function() use ($fileName, $referenceDate) {
+            return UploadHistory::query()
+                ->when($fileName, fn($q) => $q->where('file_name', 'like', "%{$fileName}%"))
+                ->when($referenceDate, fn($q) => $q->where('reference_date', $referenceDate))
+                ->latest()
+                ->paginate(10)
+                ->toArray();
+        });
+    }
 
     /**
      * Upload Instruments

@@ -22,6 +22,10 @@ class UploadHistory extends Model
         'reference_date' => 'date'
     ];
 
+    protected $hidden = [
+        'file_hash'
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
