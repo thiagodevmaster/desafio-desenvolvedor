@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 /**
  * @group Authentication
  * 
- * Endpoint for managing user access.
+ * Group for managing user access.
  */
 class AuthController extends Controller
 {

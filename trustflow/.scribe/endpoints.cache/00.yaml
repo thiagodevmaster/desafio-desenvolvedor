@@ -3,7 +3,7 @@
 name: Authentication
 description: |-
 
-  Endpoint for managing user access.
+  Group for managing user access.
 endpoints:
   -
     custom: []
@@ -15,7 +15,7 @@ endpoints:
       groupName: Authentication
       groupDescription: |-
 
-        Endpoint for managing user access.
+        Group for managing user access.
       subgroup: ''
       subgroupDescription: ''
       title: |-
@@ -107,7 +107,7 @@ endpoints:
       groupName: Authentication
       groupDescription: |-
 
-        Endpoint for managing user access.
+        Group for managing user access.
       subgroup: ''
       subgroupDescription: ''
       title: |-

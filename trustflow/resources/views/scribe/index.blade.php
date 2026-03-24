@@ -81,6 +81,17 @@ This endpoint invalidates the current token and removes the user's access to the
                             </li>
                                                                         </ul>
                             </ul>
+                    <ul id="tocify-header-instruments" class="tocify-header">
+                <li class="tocify-item level-1" data-unique="instruments">
+                    <a href="#instruments">Instruments</a>
+                </li>
+                                    <ul id="tocify-subheader-instruments" class="tocify-subheader">
+                                                    <li class="tocify-item level-2" data-unique="instruments-POSTapi-v1-upload">
+                                <a href="#instruments-POSTapi-v1-upload">Upload Instruments
+This endpoint receives the file, verifies if it's a valid document, if the reference date matches the file, and runs background jobs to save the data. Finally, it sends an email informing the upload status.</a>
+                            </li>
+                                                                        </ul>
+                            </ul>
             </div>
 
     <ul class="toc-footer" id="toc-footer">
@@ -90,7 +101,7 @@ This endpoint invalidates the current token and removes the user's access to the
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: March 21, 2026</li>
+        <li>Last updated: March 24, 2026</li>
     </ul>
 </div>
 
@@ -111,7 +122,7 @@ You can switch the language used with the tabs at the top right (or from the nav
 
         <h1 id="authentication">Authentication</h1>
 
-    <p>Endpoint for managing user access.</p>
+    <p>Group for managing user access.</p>
 
                                 <h2 id="authentication-POSTapi-v1-login">User Login
 This endpoint validates the user and returns an access token.</h2>
@@ -414,6 +425,173 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <p>Example: <code>application/json</code></p>
             </div>
                         </form>
+
+                <h1 id="instruments">Instruments</h1>
+
+    <p>Group for handling the instruments.</p>
+
+                                <h2 id="instruments-POSTapi-v1-upload">Upload Instruments
+This endpoint receives the file, verifies if it&#039;s a valid document, if the reference date matches the file, and runs background jobs to save the data. Finally, it sends an email informing the upload status.</h2>
+
+<p>
+</p>
+
+<ul>
+<li>
+<p>@authenticated</p>
+</li>
+<li>
+<p>@bodyParam file file required The instruments file from B3 (CSV, XLSX). Example: Instuments.csv</p>
+</li>
+<li>
+<p>@bodyParam reference_date date required The reference date for the file data (YYYY-MM-DD). Example: 2026-03-22</p>
+</li>
+<li>
+<p>@response 202 {
+"message": "File received and being processed; you will be notified by email upon completion."
+}</p>
+</li>
+<li>
+<p>@response 422 {
+"message": "Date mismatch: File is for 2026-01-01, but reference date is 2026-03-23."
+}</p>
+</li>
+</ul>
+
+<span id="example-requests-POSTapi-v1-upload">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request POST \
+    "http://localhost/api/v1/upload" \
+    --header "Content-Type: multipart/form-data" \
+    --header "Accept: application/json" \
+    --form "reference_date=2026-03-24T03:38:23"\
+    --form "file=@/tmp/phpmvqep67oqgip1SSKl7o" </code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost/api/v1/upload"
+);
+
+const headers = {
+    "Content-Type": "multipart/form-data",
+    "Accept": "application/json",
+};
+
+const body = new FormData();
+body.append('reference_date', '2026-03-24T03:38:23');
+body.append('file', document.querySelector('input[name="file"]').files[0]);
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-POSTapi-v1-upload">
+</span>
+<span id="execution-results-POSTapi-v1-upload" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-POSTapi-v1-upload"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-v1-upload"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-POSTapi-v1-upload" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-v1-upload">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-POSTapi-v1-upload" data-method="POST"
+      data-path="api/v1/upload"
+      data-authed="0"
+      data-hasfiles="1"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('POSTapi-v1-upload', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-POSTapi-v1-upload"
+                    onclick="tryItOut('POSTapi-v1-upload');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-POSTapi-v1-upload"
+                    onclick="cancelTryOut('POSTapi-v1-upload');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-POSTapi-v1-upload"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-black">POST</small>
+            <b><code>api/v1/upload</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="POSTapi-v1-upload"
+               value="multipart/form-data"
+               data-component="header">
+    <br>
+<p>Example: <code>multipart/form-data</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="POSTapi-v1-upload"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>file</code></b>&nbsp;&nbsp;
+<small>file</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="file" style="display: none"
+                              name="file"                data-endpoint="POSTapi-v1-upload"
+               value=""
+               data-component="body">
+    <br>
+<p>Must be a file. Must not be greater than 102400 kilobytes. Example: <code>/tmp/phpmvqep67oqgip1SSKl7o</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>reference_date</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="reference_date"                data-endpoint="POSTapi-v1-upload"
+               value="2026-03-24T03:38:23"
+               data-component="body">
+    <br>
+<p>Must be a valid date. Example: <code>2026-03-24T03:38:23</code></p>
+        </div>
+        </form>
 
             
 
