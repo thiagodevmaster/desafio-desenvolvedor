@@ -75,7 +75,7 @@ services:
         environment:
             WWWUSER: '${WWWUSER}'
             LARAVEL_SAIL: 1
-            SUPERVISOR_PHP_COMMAND: "php artisan queue:listen --verbose --tries=3 --timeout=90"
+            SUPERVISOR_PHP_COMMAND: "php artisan queue:listen --verbose --tries=3 --timeout=1800"
         volumes:
             - '.:/var/www/html'
         networks:

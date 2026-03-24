@@ -17,7 +17,7 @@ class UploadController extends Controller
                 'required',
                 'file',
                 'mimes:csv,txt,xlsx,xls',
-                'max:102400'
+                'max:102400' // 100 MB
             ],
             'reference_date' => "required|date"    
         ]);

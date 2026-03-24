@@ -17,19 +17,14 @@ use OpenSpout\Reader\XLSX\Reader as XLSXReader;
 class ProcessInstrumentUpload implements ShouldQueue
 {
     use Queueable;
-    private int $timeout = 900;
+    public int $timeout = 1800; // 30 minutos
 
-    /**
-     * Create a new job instance.
-     */
     public function __construct(private UploadHistory $history, private string $path)
     {}
 
-    /**
-     * Execute the job.
-     */
     public function handle(): void
     {
+        DB::disableQueryLog();
         $fullPath = Storage::path($this->path);
 
         if(!file_exists($fullPath)){
@@ -62,6 +57,7 @@ class ProcessInstrumentUpload implements ShouldQueue
 
         $fillable = (new Instrument())->getFillable();
 
+        
         try{
             DB::beginTransaction();
 
@@ -91,8 +87,13 @@ class ProcessInstrumentUpload implements ShouldQueue
                             if(array_key_exists($field, $dataFromFile)) {
                                 $val = $dataFromFile[$field];
 
+
                                 if (in_array($field, ['ExrcPric', 'CtrctMltplr'])) {
                                     $val = str_replace(',', '.', $val);
+                                }
+
+                                if (is_string($val)) {
+                                    $val = mb_convert_encoding($val, 'UTF-8', 'ISO-8859-1');
                                 }
 
                                 $record[$field] = $val === '' ? null : $val;
