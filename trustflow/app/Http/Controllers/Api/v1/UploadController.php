@@ -4,11 +4,14 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
 use App\Jobs\ProcessInstrumentUpload;
+use App\Jobs\SendEmailInstrumentsJob;
 use App\Models\UploadHistory;
 use App\Services\InstrumentsService;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Bus;
+use Throwable;
 
 class UploadController extends Controller
 {
@@ -36,7 +39,12 @@ class UploadController extends Controller
                 'status' => 'pending'
             ]);
 
-            ProcessInstrumentUpload::dispatch($history, $archive['path']);
+            Bus::chain([
+                new ProcessInstrumentUpload($history, $archive['path']),
+                new SendEmailInstrumentsJob($history, null),
+            ])->catch(function (Throwable $e) use ($history) {
+                SendEmailInstrumentsJob::dispatch($history, $e->getMessage());
+            })->dispatch();
 
             return response()->json([
                 "message" => "File received and being processed; you will be notified by email upon completion.",
@@ -46,7 +54,5 @@ class UploadController extends Controller
                 "message" => $error->getMessage(),
             ], $error->getCode() ?: 400);
         }
-
-        
     }
 }
