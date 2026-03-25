@@ -73,7 +73,7 @@ class Instrument extends Model
 
 
     protected $casts = [
-        'RptDt' => 'date',
+        'RptDt' => 'string',
         'XprtnDt' => 'date',
         'TradgStartDt' => 'date',
         'TradgEndDt' => 'date',
@@ -81,10 +81,10 @@ class Instrument extends Model
         'DlvryNtceEndDt' => 'date',
         'OpngPosLmtDt' => 'date',
         'CorpActnStartDt' => 'date',
-        'ReqrdConvsInd' => 'boolean',
-        'PrmUpfrntInd' => 'boolean',
-        'PrtcnFlg' => 'boolean',
-        'AutomtcExrcInd' => 'boolean',
+        'ReqrdConvsInd' => 'string',
+        'PrmUpfrntInd' => 'string',
+        'PrtcnFlg' => 'string',
+        'AutomtcExrcInd' => 'string',
         'ExrcPric' => 'decimal:8',
         'CtrctMltplr' => 'decimal:8',
     ];

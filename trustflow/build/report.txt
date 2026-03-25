@@ -11,6 +11,11 @@ Instrument Service (Tests\Feature\Services\InstrumentService)
  [x] It throws exception if file header is invalid
  [x] Throw an exception if the data provided does not match the data in the file
 
+Instruments Controller (Tests\Feature\InstrumentsController)
+ [x] User can list instruments whith cache
+ [x] User can list instruments whith filters
+ [x] It fails if reference date format is invalid
+
 Process Instrument Upload (Tests\Feature\Jobs\ProcessInstrumentUpload)
  [x] It processes csv upload correctly
 
@@ -32,4 +37,5 @@ Upload History (Tests\Feature\UploadHistory)
  [x] User can list upload history whith cache
  [x] Whether upload history returns correctly using filter file name
  [x] Whether upload history returns correctly using filter reference date
+ [x] It fails if reference date format is invalid
 
