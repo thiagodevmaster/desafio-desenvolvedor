@@ -87,8 +87,10 @@ This endpoint invalidates the current token and removes the user's access to the
                 </li>
                                     <ul id="tocify-subheader-instruments" class="tocify-subheader">
                                                     <li class="tocify-item level-2" data-unique="instruments-POSTapi-v1-upload">
-                                <a href="#instruments-POSTapi-v1-upload">Upload Instruments
-This endpoint receives the file, verifies if it's a valid document, if the reference date matches the file, and runs background jobs to save the data. Finally, it sends an email informing the upload status.</a>
+                                <a href="#instruments-POSTapi-v1-upload">Upload Instruments</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="instruments-GETapi-v1-uploads">
+                                <a href="#instruments-GETapi-v1-uploads">List Upload History</a>
                             </li>
                                                                         </ul>
                             </ul>
@@ -101,7 +103,7 @@ This endpoint receives the file, verifies if it's a valid document, if the refer
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: March 24, 2026</li>
+        <li>Last updated: March 25, 2026</li>
     </ul>
 </div>
 
@@ -430,33 +432,13 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
     <p>Group for handling the instruments.</p>
 
-                                <h2 id="instruments-POSTapi-v1-upload">Upload Instruments
-This endpoint receives the file, verifies if it&#039;s a valid document, if the reference date matches the file, and runs background jobs to save the data. Finally, it sends an email informing the upload status.</h2>
+                                <h2 id="instruments-POSTapi-v1-upload">Upload Instruments</h2>
 
 <p>
+<small class="badge badge-darkred">requires authentication</small>
 </p>
 
-<ul>
-<li>
-<p>@authenticated</p>
-</li>
-<li>
-<p>@bodyParam file file required The instruments file from B3 (CSV, XLSX). Example: Instuments.csv</p>
-</li>
-<li>
-<p>@bodyParam reference_date date required The reference date for the file data (YYYY-MM-DD). Example: 2026-03-22</p>
-</li>
-<li>
-<p>@response 202 {
-"message": "File received and being processed; you will be notified by email upon completion."
-}</p>
-</li>
-<li>
-<p>@response 422 {
-"message": "Date mismatch: File is for 2026-01-01, but reference date is 2026-03-23."
-}</p>
-</li>
-</ul>
+<p>This endpoint receives the file, verifies if it's a valid document, if the reference date matches the file, and runs background jobs to save the data. Finally, it sends an email informing the upload status.</p>
 
 <span id="example-requests-POSTapi-v1-upload">
 <blockquote>Example request:</blockquote>
@@ -467,8 +449,8 @@ This endpoint receives the file, verifies if it&#039;s a valid document, if the 
     "http://localhost/api/v1/upload" \
     --header "Content-Type: multipart/form-data" \
     --header "Accept: application/json" \
-    --form "reference_date=2026-03-24T03:38:23"\
-    --form "file=@/tmp/phpmvqep67oqgip1SSKl7o" </code></pre></div>
+    --form "reference_date=2026-03-22"\
+    --form "file=@/tmp/phpurfqkgv8lphq8jbLInW" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -482,7 +464,7 @@ const headers = {
 };
 
 const body = new FormData();
-body.append('reference_date', '2026-03-24T03:38:23');
+body.append('reference_date', '2026-03-22');
 body.append('file', document.querySelector('input[name="file"]').files[0]);
 
 fetch(url, {
@@ -494,7 +476,25 @@ fetch(url, {
 </span>
 
 <span id="example-responses-POSTapi-v1-upload">
-</span>
+            <blockquote>
+            <p>Example response (202):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;File received and being processed; you will be notified by email upon completion.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (422):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Date mismatch: File is for 2026-01-01, but reference date is 2026-03-23.&quot;
+}</code>
+ </pre>
+    </span>
 <span id="execution-results-POSTapi-v1-upload" hidden>
     <blockquote>Received response<span
                 id="execution-response-status-POSTapi-v1-upload"></span>:
@@ -512,7 +512,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 </span>
 <form id="form-POSTapi-v1-upload" data-method="POST"
       data-path="api/v1/upload"
-      data-authed="0"
+      data-authed="1"
       data-hasfiles="1"
       data-isarraybody="0"
       autocomplete="off"
@@ -577,21 +577,243 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>Must be a file. Must not be greater than 102400 kilobytes. Example: <code>/tmp/phpmvqep67oqgip1SSKl7o</code></p>
+<p>The instruments file from B3 (CSV, XLSX) Example: <code>/tmp/phpurfqkgv8lphq8jbLInW</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>reference_date</code></b>&nbsp;&nbsp;
-<small>string</small>&nbsp;
+<small>date</small>&nbsp;
  &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
                               name="reference_date"                data-endpoint="POSTapi-v1-upload"
-               value="2026-03-24T03:38:23"
+               value="2026-03-22"
                data-component="body">
     <br>
-<p>Must be a valid date. Example: <code>2026-03-24T03:38:23</code></p>
+<p>The reference date for the file data (YYYY-MM-DD). Example: <code>2026-03-22</code></p>
         </div>
         </form>
+
+                    <h2 id="instruments-GETapi-v1-uploads">List Upload History</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Returns a paginated list of uploads.
+The data is cached for 30 minutes to optimize performance on repetitive queries.</p>
+
+<span id="example-requests-GETapi-v1-uploads">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://localhost/api/v1/uploads?file_name=report&amp;reference_date=2026-03-24&amp;page=1" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost/api/v1/uploads"
+);
+
+const params = {
+    "file_name": "report",
+    "reference_date": "2026-03-24",
+    "page": "1",
+};
+Object.keys(params)
+    .forEach(key =&gt; url.searchParams.append(key, params[key]));
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-v1-uploads">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;current_page&quot;: 1,
+    &quot;data&quot;: [
+        {
+            &quot;id&quot;: 1,
+            &quot;user_id&quot;: 2,
+            &quot;file_name&quot;: &quot;Instruments_20260324.csv&quot;,
+            &quot;reference_date&quot;: &quot;2026-03-24&quot;,
+            &quot;status&quot;: &quot;completed&quot;,
+            &quot;total_rows&quot;: 120879,
+            &quot;created_at&quot;: &quot;2026-03-24T22:08:44.000000Z&quot;
+        }
+    ],
+    &quot;first_page_url&quot;: &quot;http://localhost/api/v1/uploads?page=1&quot;,
+    &quot;from&quot;: 1,
+    &quot;last_page&quot;: 1,
+    &quot;last_page_url&quot;: &quot;http://localhost/api/v1/uploads?page=1&quot;,
+    &quot;links&quot;: [
+        {
+            &quot;url&quot;: null,
+            &quot;label&quot;: &quot;&amp;laquo; Previous&quot;,
+            &quot;page&quot;: null,
+            &quot;active&quot;: false
+        },
+        {
+            &quot;url&quot;: &quot;http://localhost/api/v1/uploads?page=1&quot;,
+            &quot;label&quot;: &quot;1&quot;,
+            &quot;page&quot;: 1,
+            &quot;active&quot;: true
+        },
+        {
+            &quot;url&quot;: null,
+            &quot;label&quot;: &quot;Next &amp;raquo;&quot;,
+            &quot;page&quot;: null,
+            &quot;active&quot;: false
+        }
+    ],
+    &quot;next_page_url&quot;: null,
+    &quot;path&quot;: &quot;http://localhost/api/v1/uploads&quot;,
+    &quot;per_page&quot;: 10,
+    &quot;prev_page_url&quot;: null,
+    &quot;to&quot;: 1,
+    &quot;total&quot;: 1
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (422):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;The reference date field must match the format Y-m-d.&quot;,
+    &quot;errors&quot;: {
+        &quot;reference_date&quot;: [
+            &quot;The reference date field must match the format Y-m-d.&quot;
+        ]
+    }
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-v1-uploads" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-v1-uploads"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-v1-uploads"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-v1-uploads" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-v1-uploads">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETapi-v1-uploads" data-method="GET"
+      data-path="api/v1/uploads"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-v1-uploads', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-v1-uploads"
+                    onclick="tryItOut('GETapi-v1-uploads');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-v1-uploads"
+                    onclick="cancelTryOut('GETapi-v1-uploads');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-v1-uploads"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/v1/uploads</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETapi-v1-uploads"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETapi-v1-uploads"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                            <h4 class="fancy-heading-panel"><b>Query Parameters</b></h4>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>file_name</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="file_name"                data-endpoint="GETapi-v1-uploads"
+               value="report"
+               data-component="query">
+    <br>
+<p>Partial filter by file name. Example: <code>report</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>reference_date</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="reference_date"                data-endpoint="GETapi-v1-uploads"
+               value="2026-03-24"
+               data-component="query">
+    <br>
+<p>date Filter by reference date. (YYYY-MM-DD). Example: <code>2026-03-24</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>page</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="page"                data-endpoint="GETapi-v1-uploads"
+               value="1"
+               data-component="query">
+    <br>
+<p>Page number for pagination. Example: <code>1</code></p>
+            </div>
+                </form>
 
             
 
