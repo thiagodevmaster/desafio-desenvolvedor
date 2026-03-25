@@ -122,6 +122,7 @@ class ProcessInstrumentUpload implements ShouldQueue
             ]);
 
             Cache::tags(['instruments_history'])->flush();
+            Cache::tags(["instruments_data"])->flush();
 
             DB::commit();
 
