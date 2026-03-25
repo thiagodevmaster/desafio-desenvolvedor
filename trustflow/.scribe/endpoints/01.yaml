@@ -1,7 +1,7 @@
-name: Instruments
+name: Uploads
 description: |-
 
-  Group for handling the instruments.
+  Group for handling the instruments upload.
 endpoints:
   -
     custom: []
@@ -10,10 +10,10 @@ endpoints:
     uri: api/v1/upload
     metadata:
       custom: []
-      groupName: Instruments
+      groupName: Uploads
       groupDescription: |-
 
-        Group for handling the instruments.
+        Group for handling the instruments upload.
       subgroup: ''
       subgroupDescription: ''
       title: 'Upload Instruments'
@@ -66,6 +66,15 @@ endpoints:
         description: ''
       -
         custom: []
+        status: 401
+        content: |-
+          {
+            "message": "Unauthenticated."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
         status: 422
         content: |-
           {
@@ -85,10 +94,10 @@ endpoints:
     uri: api/v1/uploads
     metadata:
       custom: []
-      groupName: Instruments
+      groupName: Uploads
       groupDescription: |-
 
-        Group for handling the instruments.
+        Group for handling the instruments upload.
       subgroup: ''
       subgroupDescription: ''
       title: 'List Upload History'
@@ -176,6 +185,15 @@ endpoints:
           "prev_page_url": null,
           "to": 1,
           "total": 1
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 401
+        content: |-
+          {
+            "message": "Unauthenticated."
           }
         headers: []
         description: ''

@@ -1,4 +1,4 @@
-name: Authentication
+name: Auth
 description: |-
 
   Group for managing user access.
@@ -10,7 +10,7 @@ endpoints:
     uri: api/v1/login
     metadata:
       custom: []
-      groupName: Authentication
+      groupName: Auth
       groupDescription: |-
 
         Group for managing user access.
@@ -102,7 +102,7 @@ endpoints:
     uri: api/v1/logout
     metadata:
       custom: []
-      groupName: Authentication
+      groupName: Auth
       groupDescription: |-
 
         Group for managing user access.
@@ -131,6 +131,15 @@ endpoints:
         content: |-
           {
            'message': 'Logged out successfully'
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 401
+        content: |-
+          {
+            "message": "Unauthenticated."
           }
         headers: []
         description: ''

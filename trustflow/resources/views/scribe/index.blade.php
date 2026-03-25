@@ -66,17 +66,17 @@
                     <a href="#authenticating-requests">Authenticating requests</a>
                 </li>
                             </ul>
-                    <ul id="tocify-header-authentication" class="tocify-header">
-                <li class="tocify-item level-1" data-unique="authentication">
-                    <a href="#authentication">Authentication</a>
+                    <ul id="tocify-header-auth" class="tocify-header">
+                <li class="tocify-item level-1" data-unique="auth">
+                    <a href="#auth">Auth</a>
                 </li>
-                                    <ul id="tocify-subheader-authentication" class="tocify-subheader">
-                                                    <li class="tocify-item level-2" data-unique="authentication-POSTapi-v1-login">
-                                <a href="#authentication-POSTapi-v1-login">User Login
+                                    <ul id="tocify-subheader-auth" class="tocify-subheader">
+                                                    <li class="tocify-item level-2" data-unique="auth-POSTapi-v1-login">
+                                <a href="#auth-POSTapi-v1-login">User Login
 This endpoint validates the user and returns an access token.</a>
                             </li>
-                                                                                <li class="tocify-item level-2" data-unique="authentication-POSTapi-v1-logout">
-                                <a href="#authentication-POSTapi-v1-logout">User Logout
+                                                                                <li class="tocify-item level-2" data-unique="auth-POSTapi-v1-logout">
+                                <a href="#auth-POSTapi-v1-logout">User Logout
 This endpoint invalidates the current token and removes the user's access to the protected routes.</a>
                             </li>
                                                                         </ul>
@@ -86,11 +86,21 @@ This endpoint invalidates the current token and removes the user's access to the
                     <a href="#instruments">Instruments</a>
                 </li>
                                     <ul id="tocify-subheader-instruments" class="tocify-subheader">
-                                                    <li class="tocify-item level-2" data-unique="instruments-POSTapi-v1-upload">
-                                <a href="#instruments-POSTapi-v1-upload">Upload Instruments</a>
+                                                    <li class="tocify-item level-2" data-unique="instruments-GETapi-v1-instruments">
+                                <a href="#instruments-GETapi-v1-instruments">List Instruments</a>
                             </li>
-                                                                                <li class="tocify-item level-2" data-unique="instruments-GETapi-v1-uploads">
-                                <a href="#instruments-GETapi-v1-uploads">List Upload History</a>
+                                                                        </ul>
+                            </ul>
+                    <ul id="tocify-header-uploads" class="tocify-header">
+                <li class="tocify-item level-1" data-unique="uploads">
+                    <a href="#uploads">Uploads</a>
+                </li>
+                                    <ul id="tocify-subheader-uploads" class="tocify-subheader">
+                                                    <li class="tocify-item level-2" data-unique="uploads-POSTapi-v1-upload">
+                                <a href="#uploads-POSTapi-v1-upload">Upload Instruments</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="uploads-GETapi-v1-uploads">
+                                <a href="#uploads-GETapi-v1-uploads">List Upload History</a>
                             </li>
                                                                         </ul>
                             </ul>
@@ -122,11 +132,11 @@ You can switch the language used with the tabs at the top right (or from the nav
         <h1 id="authenticating-requests">Authenticating requests</h1>
 <p>This API is not authenticated.</p>
 
-        <h1 id="authentication">Authentication</h1>
+        <h1 id="auth">Auth</h1>
 
     <p>Group for managing user access.</p>
 
-                                <h2 id="authentication-POSTapi-v1-login">User Login
+                                <h2 id="auth-POSTapi-v1-login">User Login
 This endpoint validates the user and returns an access token.</h2>
 
 <p>
@@ -306,7 +316,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
         </div>
         </form>
 
-                    <h2 id="authentication-POSTapi-v1-logout">User Logout
+                    <h2 id="auth-POSTapi-v1-logout">User Logout
 This endpoint invalidates the current token and removes the user&#039;s access to the protected routes.</h2>
 
 <p>
@@ -352,6 +362,15 @@ fetch(url, {
 
 <code class="language-json" style="max-height: 300px;">{
  &#039;message&#039;: &#039;Logged out successfully&#039;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (401):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Unauthenticated.&quot;
 }</code>
  </pre>
     </span>
@@ -430,9 +449,328 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
                 <h1 id="instruments">Instruments</h1>
 
-    <p>Group for handling the instruments.</p>
+    <p>Group for handling the registered instruments.</p>
 
-                                <h2 id="instruments-POSTapi-v1-upload">Upload Instruments</h2>
+                                <h2 id="instruments-GETapi-v1-instruments">List Instruments</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Returns a paginated list of instruments registered in the system.
+The data is cached for 60 minutes to optimize performance on repetitive queries.</p>
+
+<span id="example-requests-GETapi-v1-instruments">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://localhost/api/v1/instruments?TckrSymb=PETR4&amp;RptDt=2026-03-25&amp;format=summary&amp;page=1" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost/api/v1/instruments"
+);
+
+const params = {
+    "TckrSymb": "PETR4",
+    "RptDt": "2026-03-25",
+    "format": "summary",
+    "page": "1",
+};
+Object.keys(params)
+    .forEach(key =&gt; url.searchParams.append(key, params[key]));
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-v1-instruments">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;current_page&quot;: 1,
+    &quot;data&quot;: [
+        {
+            &quot;RptDt&quot;: &quot;2026-03-25&quot;,
+            &quot;TckrSymb&quot;: &quot;PETR4&quot;,
+            &quot;MktNm&quot;: &quot;VISTA&quot;,
+            &quot;SctyCtgyNm&quot;: &quot;A&Ccedil;&Atilde;O&quot;,
+            &quot;ISIN&quot;: &quot;BRPETRACNPR6&quot;,
+            &quot;CrpnNm&quot;: &quot;PETROBRAS&quot;
+        }
+    ],
+    &quot;first_page_url&quot;: &quot;http://localhost/api/v1/instruments?page=1&quot;,
+    &quot;from&quot;: 1,
+    &quot;last_page&quot;: 2,
+    &quot;last_page_url&quot;: &quot;http://localhost/api/v1/instruments?page=2&quot;,
+    &quot;links&quot;: [
+        {
+            &quot;url&quot;: null,
+            &quot;label&quot;: &quot;&amp;laquo; Previous&quot;,
+            &quot;active&quot;: false
+        },
+        {
+            &quot;url&quot;: &quot;http://localhost/api/v1/instruments?page=1&quot;,
+            &quot;label&quot;: &quot;1&quot;,
+            &quot;active&quot;: true
+        }
+    ],
+    &quot;next_page_url&quot;: &quot;http://localhost/api/v1/instruments?page=2&quot;,
+    &quot;path&quot;: &quot;http://localhost/api/v1/instruments&quot;,
+    &quot;per_page&quot;: 10,
+    &quot;prev_page_url&quot;: null,
+    &quot;to&quot;: 10,
+    &quot;total&quot;: 20
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (200, full format):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+  &quot;current_page&quot;: 1,
+  &quot;data&quot;: [
+    {
+      &quot;id&quot;: 1,
+      &quot;upload_history_id&quot;: 5,
+      &quot;RptDt&quot;: &quot;2026-03-25&quot;,
+      &quot;TckrSymb&quot;: &quot;PETR4&quot;,
+      &quot;Asst&quot;: &quot;STOCK&quot;,
+      &quot;AsstDesc&quot;: &quot;Petr&oacute;leo Brasileiro S.A.&quot;,
+      &quot;SgmtNm&quot;: &quot;BOVESPA&quot;,
+      &quot;MktNm&quot;: &quot;VISTA&quot;,
+      &quot;SctyCtgyNm&quot;: &quot;A&Ccedil;&Atilde;O&quot;,
+      &quot;XprtnDt&quot;: null,
+      &quot;XprtnCd&quot;: null,
+      &quot;TradgStartDt&quot;: &quot;2020-01-01&quot;,
+      &quot;TradgEndDt&quot;: null,
+      &quot;BaseCd&quot;: 1,
+      &quot;ConvsCritNm&quot;: null,
+      &quot;MtrtyDtTrgtPt&quot;: null,
+      &quot;ReqrdConvsInd&quot;: null,
+      &quot;ISIN&quot;: &quot;BRPETRACNPR6&quot;,
+      &quot;CFICd&quot;: &quot;ESVUFR&quot;,
+      &quot;DlvryNtceStartDt&quot;: null,
+      &quot;DlvryNtceEndDt&quot;: null,
+      &quot;OptnTp&quot;: null,
+      &quot;CtrctMltplr&quot;: null,
+      &quot;AsstQtnQty&quot;: null,
+      &quot;AllcnRndLot&quot;: null,
+      &quot;TradgCcy&quot;: &quot;BRL&quot;,
+      &quot;DlvryTpNm&quot;: null,
+      &quot;WdrwlDays&quot;: null,
+      &quot;WrkgDays&quot;: null,
+      &quot;ClnrDays&quot;: null,
+      &quot;RlvrBasePricNm&quot;: null,
+      &quot;OpngFutrPosDay&quot;: null,
+      &quot;SdTpCd1&quot;: null,
+      &quot;UndrlygTckrSymb1&quot;: null,
+      &quot;SdTpCd2&quot;: null,
+      &quot;UndrlygTckrSymb2&quot;: null,
+      &quot;PureGoldWght&quot;: null,
+      &quot;ExrcPric&quot;: null,
+      &quot;OptnStyle&quot;: null,
+      &quot;ValTpNm&quot;: null,
+      &quot;PrmUpfrntInd&quot;: null,
+      &quot;OpngPosLmtDt&quot;: null,
+      &quot;DstrbtnId&quot;: null,
+      &quot;PricFctr&quot;: null,
+      &quot;DaysToSttlm&quot;: null,
+      &quot;SrsTpNm&quot;: null,
+      &quot;PrtcnFlg&quot;: null,
+      &quot;AutomtcExrcInd&quot;: null,
+      &quot;SpcfctnCd&quot;: null,
+      &quot;CrpnNm&quot;: &quot;PETROBRAS&quot;,
+      &quot;CorpActnStartDt&quot;: null,
+      &quot;CtdyTrtmntTpNm&quot;: null,
+      &quot;MktCptlstn&quot;: 300000000000,
+      &quot;CorpGovnLvlNm&quot;: &quot;N1&quot;,
+      &quot;created_at&quot;: &quot;2026-03-25T10:00:00.000000Z&quot;,
+      &quot;updated_at&quot;: &quot;2026-03-25T10:00:00.000000Z&quot;
+    }
+  ],
+  &quot;first_page_url&quot;: &quot;http://localhost/api/v1/instruments?page=1&quot;,
+  &quot;from&quot;: 1,
+  &quot;last_page&quot;: 2,
+  &quot;last_page_url&quot;: &quot;http://localhost/api/v1/instruments?page=2&quot;,
+  &quot;links&quot;: [...],
+  &quot;next_page_url&quot;: &quot;http://localhost/api/v1/instruments?page=2&quot;,
+  &quot;path&quot;: &quot;http://localhost/api/v1/instruments&quot;,
+  &quot;per_page&quot;: 10,
+  &quot;prev_page_url&quot;: null,
+  &quot;to&quot;: 10,
+  &quot;total&quot;: 20
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (401):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Unauthenticated.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (422):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;The RptDt field must match the format Y-m-d.&quot;,
+    &quot;errors&quot;: {
+        &quot;RptDt&quot;: [
+            &quot;The RptDt field must match the format Y-m-d.&quot;
+        ]
+    }
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-v1-instruments" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-v1-instruments"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-v1-instruments"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-v1-instruments" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-v1-instruments">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETapi-v1-instruments" data-method="GET"
+      data-path="api/v1/instruments"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-v1-instruments', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-v1-instruments"
+                    onclick="tryItOut('GETapi-v1-instruments');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-v1-instruments"
+                    onclick="cancelTryOut('GETapi-v1-instruments');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-v1-instruments"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/v1/instruments</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETapi-v1-instruments"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETapi-v1-instruments"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                            <h4 class="fancy-heading-panel"><b>Query Parameters</b></h4>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>TckrSymb</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="TckrSymb"                data-endpoint="GETapi-v1-instruments"
+               value="PETR4"
+               data-component="query">
+    <br>
+<p>optional Filter by ticker symbol (partial match). Example: <code>PETR4</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>RptDt</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="RptDt"                data-endpoint="GETapi-v1-instruments"
+               value="2026-03-25"
+               data-component="query">
+    <br>
+<p>date optional Filter by reference date (YYYY-MM-DD). Example: <code>2026-03-25</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>format</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="format"                data-endpoint="GETapi-v1-instruments"
+               value="summary"
+               data-component="query">
+    <br>
+<p>optional Response format: "summary" (default) or "full". Example: <code>summary</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>page</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="page"                data-endpoint="GETapi-v1-instruments"
+               value="1"
+               data-component="query">
+    <br>
+<p>optional Page number for pagination. Example: <code>1</code></p>
+            </div>
+                </form>
+
+                <h1 id="uploads">Uploads</h1>
+
+    <p>Group for handling the instruments upload.</p>
+
+                                <h2 id="uploads-POSTapi-v1-upload">Upload Instruments</h2>
 
 <p>
 <small class="badge badge-darkred">requires authentication</small>
@@ -450,7 +788,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Content-Type: multipart/form-data" \
     --header "Accept: application/json" \
     --form "reference_date=2026-03-22"\
-    --form "file=@/tmp/phpurfqkgv8lphq8jbLInW" </code></pre></div>
+    --form "file=@/tmp/phpq375u6pck1jr59eujWv" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -483,6 +821,15 @@ fetch(url, {
 
 <code class="language-json" style="max-height: 300px;">{
     &quot;message&quot;: &quot;File received and being processed; you will be notified by email upon completion.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (401):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Unauthenticated.&quot;
 }</code>
  </pre>
             <blockquote>
@@ -577,7 +924,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>The instruments file from B3 (CSV, XLSX) Example: <code>/tmp/phpurfqkgv8lphq8jbLInW</code></p>
+<p>The instruments file from B3 (CSV, XLSX) Example: <code>/tmp/phpq375u6pck1jr59eujWv</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>reference_date</code></b>&nbsp;&nbsp;
@@ -593,7 +940,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
         </div>
         </form>
 
-                    <h2 id="instruments-GETapi-v1-uploads">List Upload History</h2>
+                    <h2 id="uploads-GETapi-v1-uploads">List Upload History</h2>
 
 <p>
 <small class="badge badge-darkred">requires authentication</small>
@@ -688,6 +1035,15 @@ fetch(url, {
     &quot;prev_page_url&quot;: null,
     &quot;to&quot;: 1,
     &quot;total&quot;: 1
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (401):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Unauthenticated.&quot;
 }</code>
  </pre>
             <blockquote>

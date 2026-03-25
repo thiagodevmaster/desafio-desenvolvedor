@@ -15,9 +15,9 @@ use Illuminate\Support\Facades\Cache;
 use Throwable;
 
 /**
- * @group Instruments
+ * @group Uploads
  * 
- * Group for handling the instruments.
+ * Group for handling the instruments upload.
  */
 class UploadController extends Controller
 {
@@ -66,6 +66,9 @@ class UploadController extends Controller
      * "reference_date": ["The reference date field must match the format Y-m-d."]
      * }
      * }
+     * @response 401 {
+     *   "message": "Unauthenticated."
+     * }
      */
     public function index(Request $request)
     {
@@ -104,6 +107,9 @@ class UploadController extends Controller
      * }
      * @response 422 {
      * "message": "Date mismatch: File is for 2026-01-01, but reference date is 2026-03-23."
+     * }
+     * @response 401 {
+     *   "message": "Unauthenticated."
      * }
      */
     public function store(Request $request)

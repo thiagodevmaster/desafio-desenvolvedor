@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 /**
- * @group Authentication
+ * @group Auth
  * 
  * Group for managing user access.
  */
@@ -61,6 +61,9 @@ class AuthController extends Controller
      * @authenticated
      * @response 200 {
      *  'message': 'Logged out successfully' 
+     * }
+     * @response 401 {
+     *   "message": "Unauthenticated."
      * }
      */
     public function logout(Request $request)
