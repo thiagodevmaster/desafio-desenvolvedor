@@ -7,6 +7,7 @@ use App\Models\UploadHistory;
 use Exception;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -119,6 +120,8 @@ class ProcessInstrumentUpload implements ShouldQueue
                 'total_rows' => $totalRows,
                 'status' => 'completed'
             ]);
+
+            Cache::tags(['instruments_history'])->flush();
 
             DB::commit();
 

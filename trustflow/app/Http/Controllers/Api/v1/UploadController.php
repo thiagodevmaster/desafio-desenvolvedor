@@ -26,10 +26,16 @@ class UploadController extends Controller
         $fileName = $request->query('file_name');
         $referenceDate = $request->query('reference_date');
         $page = $request->query('page', 1);
+        
+        if($referenceDate){
+            $request->validate([
+                "reference_date" => "required|date_format:Y-m-d"
+            ]);
+        }
 
         $cacheKey = "global_history_f:{$fileName}_d:{$referenceDate}_p:{$page}";
 
-        return Cache::remember($cacheKey, now()->addMinutes(30), function() use ($fileName, $referenceDate) {
+        return Cache::tags(['instruments_history'])->remember($cacheKey, now()->addMinutes(30), function() use ($fileName, $referenceDate) {
             return UploadHistory::query()
                 ->when($fileName, fn($q) => $q->where('file_name', 'like', "%{$fileName}%"))
                 ->when($referenceDate, fn($q) => $q->where('reference_date', $referenceDate))

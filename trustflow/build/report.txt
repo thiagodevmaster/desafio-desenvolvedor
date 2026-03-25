@@ -28,3 +28,8 @@ Send Email Instruments (Tests\Feature\Jobs\SendEmailInstruments)
  [x] If an error is received it sends a failure message
  [x] It sends success email when no error is present
 
+Upload History (Tests\Feature\UploadHistory)
+ [x] User can list upload history whith cache
+ [x] Whether upload history returns correctly using filter file name
+ [x] Whether upload history returns correctly using filter reference date
+

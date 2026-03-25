@@ -19,7 +19,7 @@ class UploadHistory extends Model
     ];
 
     protected $casts = [
-        'reference_date' => 'date'
+        'reference_date' => 'string'
     ];
 
     protected $hidden = [
