@@ -131,3 +131,16 @@ Todos os arquivos enviados para processamento são armazenados em:  ./storage/ap
 
 - **Collection do Postman:**  
 Na raiz do projeto existe o arquivo: `DESAFIO.postman_collection.json` Ele pode ser importado diretamente no **Postman** para facilitar a execução e validação dos endpoints da API.
+
+
+Para dúvidas, feedbacks ou agendamento de entrevistas, sinta-se à vontade para entrar em contato através dos canais abaixo:
+
+* **Nome:** Thiago Dantas
+* **E-mail:** thiagodantas.dev@gmail.com
+* **Telefone:** (21) 9 8113-2269
+* **LinkedIn:** [https://www.linkedin.com/in/thiago-dantas-dev/](https://www.linkedin.com/in/thiago-dantas-dev/)
+* **GitHub:** [https://github.com/thiagodevmaster](https://github.com/thiagodevmaster)
+* **Localidade:** Rio de Janeiro, RJ
+
+---
+**Desafio desenvolvido para o processo seletivo da Oliveira Trust.** 🚀
