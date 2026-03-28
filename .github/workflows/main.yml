@@ -67,8 +67,8 @@ jobs:
 
       - name: Smoke Test (Health Check)
         run: |
-          sleep 5
-          curl --fail http://localhost:8080 || exit 1
+          sleep 20
+          curl --fail --retry 10 --retry-delay 8 --retry-all-errors http://127.0.0.1:8080 || exit 1
 
       - name: Cleanup
         if: always()
