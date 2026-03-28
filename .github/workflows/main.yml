@@ -33,7 +33,7 @@ jobs:
       - name: Create .env file
         run: |
           cp .env.example .env 
-          echo "APP_PORT=8080"
+          echo "APP_PORT=8080" >> .env
 
       - name: Start Sail Containers
         run: bash vendor/bin/sail up -d
@@ -43,20 +43,20 @@ jobs:
 
       - name: Wait for MySQL
         run: |
-          until php vendor/bin/sail mysqladmin ping -h 127.0.0.1 --silent; do
+          until bash vendor/bin/sail mysqladmin ping -h 127.0.0.1 --silent; do
             echo "Aguardando MySQL..."
             sleep 2
           done
 
       - name: Prepare Application
         run: |
-          php vendor/bin/sail artisan key:generate
-          php vendor/bin/sail artisan migrate --force
-          php vendor/bin/sail artisan db:seed --force
+          bash vendor/bin/sail artisan key:generate
+          bash vendor/bin/sail artisan migrate --force
+          bash vendor/bin/sail artisan db:seed --force
 
       - name: Run Feature Tests
         run: |
-          php vendor/bin/sail artisan test
+          bash vendor/bin/sail artisan test
         env:
           APP_ENV: testing
           DB_CONNECTION: mysql
@@ -71,8 +71,8 @@ jobs:
           echo "Verificando se os containers subiram de verdade:"
           bash vendor/bin/sail ps
           echo "Tentando conexão..."
-          curl --fail --retry 5 --retry-delay 5 --retry-all-errors http://127.0.0.1:8080 || exit 1
+          curl --fail --retry 5 --retry-delay 5 --retry-all-errors http://127.0.0.1:80 || exit 1
 
       - name: Cleanup
         if: always()
-        run: php vendor/bin/sail down
+        run: bash vendor/bin/sail down
