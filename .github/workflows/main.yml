@@ -36,7 +36,7 @@ jobs:
           echo "APP_PORT=8080"
 
       - name: Start Sail Containers
-        run: php vendor/bin/sail up -d
+        run: bash vendor/bin/sail up -d
 
       - name: Fix Directory Permissions
         run: chmod -R 777 storage bootstrap/cache
@@ -68,8 +68,8 @@ jobs:
       - name: Smoke Test (Health Check)
         run: |
           sleep 20
-          echo "Listando containers ativos:"
-          php vendor/bin/sail ps
+          echo "Verificando se os containers subiram de verdade:"
+          bash vendor/bin/sail ps
           echo "Tentando conexão..."
           curl --fail --retry 5 --retry-delay 5 --retry-all-errors http://127.0.0.1:8080 || exit 1
 
