@@ -31,12 +31,12 @@ jobs:
         run: composer install --prefer-dist --no-interaction --no-progress
 
       - name: Create .env file
-        run: cp .env.example .env
+        run: |
+          cp .env.example .env 
+          echo "APP_PORT=8080"
 
       - name: Start Sail Containers
         run: php vendor/bin/sail up -d
-        env:
-          APP_PORT: 8080
 
       - name: Fix Directory Permissions
         run: chmod -R 777 storage bootstrap/cache
@@ -68,7 +68,10 @@ jobs:
       - name: Smoke Test (Health Check)
         run: |
           sleep 20
-          curl --fail --retry 10 --retry-delay 8 --retry-all-errors http://127.0.0.1:8080 || exit 1
+          echo "Listando containers ativos:"
+          php vendor/bin/sail ps
+          echo "Tentando conexão..."
+          curl --fail --retry 5 --retry-delay 5 --retry-all-errors http://127.0.0.1:8080 || exit 1
 
       - name: Cleanup
         if: always()
