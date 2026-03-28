@@ -23,7 +23,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.5'
+          php-version: '8.3'
           extensions: mbstring, dom, fileinfo, mysql, pdo_mysql, redis
           coverage: none
 
@@ -35,6 +35,8 @@ jobs:
 
       - name: Start Sail Containers
         run: php vendor/bin/sail up -d
+        env:
+          APP_PORT: 8080
 
       - name: Wait for MySQL
         run: |
@@ -63,7 +65,7 @@ jobs:
       - name: Smoke Test (Health Check)
         run: |
           sleep 5
-          curl --fail http://localhost || exit 1
+          curl --fail http://localhost:8080 || exit 1
 
       - name: Cleanup
         if: always()
