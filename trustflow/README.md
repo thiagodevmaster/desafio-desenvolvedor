@@ -1,3 +1,4 @@
+![CI - TrustFlow](https://github.com/thiagodevmaster/desafio-desenvolvedor/actions/workflows/main.yml/badge.svg)
 
 # TrustFlow - B3 Instrument Processor
 
